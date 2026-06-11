@@ -97,9 +97,15 @@ Esse manifesto define um `PodMonitor` chamado `kafka-resources-metrics` que:
 
 ---
 
-## 4. (Opcional) Criar as Prometheus Rules
+## 4. Criar as Prometheus Rules
 
-Crie um recurso `PrometheusRule` com regras de alerta/agregação para o Kafka, conforme sua necessidade. Os exemplos oficiais estão disponíveis no [repositório do Strimzi](https://github.com/strimzi/strimzi-kafka-operator/tree/main/examples/metrics).
+Aplique o arquivo [prometheus-rules.yaml](prometheus-rules.yaml):
+
+```bash
+oc apply -f prometheus-rules.yaml -n kafka
+```
+
+Esse manifesto define um `PrometheusRule` chamado `strimzi-kube-state-metrics` com regras de alerta baseadas nas métricas do Strimzi, cobrindo recursos como `Kafka`, `KafkaTopic`, `KafkaUser`, `KafkaNodePool`, `KafkaRebalance`, `KafkaConnect(or)`, `KafkaMirrorMaker2` e `KafkaAccess` — alertando, por exemplo, quando um recurso não fica `Ready` (`KafkaNotReady`, `KafkaTopicNotReady`, ...) ou usa configuração depreciada (`*Deprecated`).
 
 ---
 
@@ -228,6 +234,7 @@ No Grafana: **Dashboards → New → Import**, faça o upload do arquivo JSON e 
 | [kafka-metrics.yaml](kafka-metrics.yaml) | `Kafka`, `KafkaNodePool`, `ConfigMap` | Cluster Kafka + JMX Exporter (regras de métricas) |
 | [kafka-exporter.yaml](kafka-exporter.yaml) | trecho `spec.kafkaExporter` | Habilita o Kafka Exporter (lag/offsets) |
 | [kafka-resources-metrics.yaml](kafka-resources-metrics.yaml) | `PodMonitor` | Scrape das métricas dos pods Strimzi |
+| [prometheus-rules.yaml](prometheus-rules.yaml) | `PrometheusRule` | Regras de alerta dos recursos Strimzi |
 | [grafana-cluster-monitoring-binding.yaml](grafana-cluster-monitoring-binding.yaml) | `ClusterRoleBinding` | Permissão `cluster-monitoring-view` para o Grafana |
 | [datasource.yaml](datasource.yaml) | datasource Grafana | Conexão com o Thanos Querier |
 | [dashboards/](dashboards/) | JSON | Dashboards do Strimzi para importar |
