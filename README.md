@@ -113,3 +113,5 @@ com instruções de build e execução.
 
 O monitoramento do cluster no Grafana (JMX Exporter, PodMonitor, datasource e dashboards)
 está documentado em [`metrics/README.md`](metrics/README.md).
+
+![Dashboard do Kafka no Grafana](grafana_kafka_screenshot.png)
