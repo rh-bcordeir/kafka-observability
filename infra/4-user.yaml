@@ -1,0 +1,56 @@
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaUser
+metadata:
+  labels:
+    strimzi.io/cluster: kafka-cluster
+  name: user-producer
+  namespace: kafka
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      - resource:
+          type: topic
+          name: '*'
+          patternType: literal
+        operations:
+          - Describe
+          - Read
+          - Write
+      - resource:
+          type: group
+          name: '*'
+          patternType: literal
+        operations:
+          - Describe
+          - Read
+---
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaUser
+metadata:
+  labels:
+    strimzi.io/cluster: kafka-cluster
+  name: user-consumer
+  namespace: kafka
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      - resource:
+          type: topic
+          name: '*'
+          patternType: literal
+        operations:
+          - Describe
+          - Read
+      - resource:
+          type: group
+          name: '*'
+          patternType: literal
+        operations:
+          - Describe
+          - Read

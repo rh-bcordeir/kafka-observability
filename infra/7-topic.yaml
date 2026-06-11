@@ -1,0 +1,14 @@
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaTopic
+metadata:
+  labels:
+    strimzi.io/cluster: kafka-cluster
+  name: orders
+  namespace: kafka
+spec:
+  config:
+    retention.ms: 600000 # 10 minutos
+    segment.bytes: 104857600 # 100 MiB (1024 × 1024 × 100 bytes)
+    min.insync.replicas: 2
+  partitions: 6
+  replicas: 3
