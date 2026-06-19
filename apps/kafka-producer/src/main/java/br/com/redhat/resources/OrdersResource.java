@@ -18,4 +18,12 @@ public class OrdersResource {
         myTopicProducer.sendMessage(message);
         return Response.ok().build();
     }
+
+    @POST
+    @Path("/loop")
+    public Response sendLoopMessage() throws InterruptedException {
+        myTopicProducer.sendLoopMessage();        
+        return Response.ok().build();
+    }
+
 }
