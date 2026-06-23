@@ -203,7 +203,19 @@ Esse ConfigMap deve ser montado no deployment do Grafana (passo 9).
 
 ## 9. Implantar o Grafana (Deployment, Service e Route)
 
-Crie o `Deployment` e o `Service` do Grafana no namespace `grafana`, montando o `ConfigMap grafana-config` (datasource) criado no passo anterior.
+Aplique o arquivo [grafana-deployment.yaml](grafana-deployment.yaml), que cria o `Deployment` e o `Service` do Grafana no namespace `grafana`:
+
+```bash
+oc apply -f grafana-deployment.yaml -n grafana
+```
+
+Esse manifesto:
+
+- Sobe o container `grafana/grafana:12.4.2` na porta `3000`, usando a `ServiceAccount grafana-service-account` (passo 6).
+- Monta o `ConfigMap grafana-config` (datasource do passo 8) em `/etc/grafana/provisioning/datasources/datasource.yaml` via `subPath`, que é o caminho onde o Grafana provisiona datasources automaticamente no boot.
+- Usa volumes `emptyDir` para os dados (`/var/lib/grafana`) e logs (`/var/log/grafana`).
+- Define probes de `readiness`/`liveness` no endpoint `/api/health`.
+- Expõe um `Service` do tipo `ClusterIP` na porta `3000`.
 
 Em seguida, exponha o Grafana externamente com uma `Route`:
 
@@ -237,6 +249,7 @@ No Grafana: **Dashboards → New → Import**, faça o upload do arquivo JSON e 
 | [prometheus-rules.yaml](prometheus-rules.yaml) | `PrometheusRule` | Regras de alerta dos recursos Strimzi |
 | [grafana-cluster-monitoring-binding.yaml](grafana-cluster-monitoring-binding.yaml) | `ClusterRoleBinding` | Permissão `cluster-monitoring-view` para o Grafana |
 | [datasource.yaml](datasource.yaml) | datasource Grafana | Conexão com o Thanos Querier |
+| [grafana-deployment.yaml](grafana-deployment.yaml) | `Deployment`, `Service` | Implanta o Grafana montando o ConfigMap do datasource |
 | [dashboards/](dashboards/) | JSON | Dashboards do Strimzi para importar |
 
 ## Verificação
