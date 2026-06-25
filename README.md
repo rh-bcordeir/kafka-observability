@@ -7,6 +7,8 @@ observabilidade via Grafana.
 O objetivo é servir de referência prática: como expor um cluster Kafka com diferentes tipos
 de autenticação, conectar aplicações e monitorar tudo.
 
+![Dashboard do Kafka no Grafana](grafana_kafka_screenshot.png)
+
 ## Estrutura do projeto
 
 | Pasta | Conteúdo |
@@ -113,5 +115,3 @@ com instruções de build e execução.
 
 O monitoramento do cluster no Grafana (JMX Exporter, PodMonitor, datasource e dashboards)
 está documentado em [`metrics/README.md`](metrics/README.md).
-
-![Dashboard do Kafka no Grafana](grafana_kafka_screenshot.png)
